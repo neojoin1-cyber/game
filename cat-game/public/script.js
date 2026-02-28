@@ -26,8 +26,12 @@ const playerNameDisplay = document.getElementById('player-name');
 const storeBtn = document.getElementById('store-btn');
 const paypalContainer = document.getElementById('paypal-button-container');
 
-// 고양이 표정 배열 (애정도에 따라 변화)
-const catFaces = ['😺', '😸', '😻', '😽'];
+// SVG 요소들 가져오기
+const svgEyes = document.getElementById('eyes');
+const svgHeartEyes = document.getElementById('heart-eyes');
+const svgClosedEyes = document.getElementById('closed-eyes');
+const svgMouth = document.getElementById('mouth');
+const svgOpenMouth = document.getElementById('open-mouth');
 
 // 쓰다듬기(클릭) 이벤트
 catObj.addEventListener('pointerdown', (e) => {
@@ -38,12 +42,38 @@ catObj.addEventListener('pointerdown', (e) => {
 
     // 2. 애교 부리기 로직 (점수에 따라 애정도 상승)
     if (!isPremium) {
-        if (score > 100) affectionLevel = 3; // 😽
-        else if (score > 50) affectionLevel = 2; // 😻
-        else if (score > 20) affectionLevel = 1; // 😸
-        else affectionLevel = 0; // 😺
-
-        catObj.innerHTML = catFaces[affectionLevel];
+        if (score > 100) {
+            affectionLevel = 3;
+            svgEyes.style.display = 'none';
+            svgClosedEyes.style.display = 'none';
+            svgHeartEyes.style.display = 'block';
+            svgMouth.style.display = 'none';
+            svgOpenMouth.style.display = 'block';
+        }
+        else if (score > 50) {
+            affectionLevel = 2;
+            svgEyes.style.display = 'none';
+            svgClosedEyes.style.display = 'block';
+            svgHeartEyes.style.display = 'none';
+            svgMouth.style.display = 'none';
+            svgOpenMouth.style.display = 'block';
+        }
+        else if (score > 20) {
+            affectionLevel = 1;
+            svgEyes.style.display = 'block';
+            svgClosedEyes.style.display = 'none';
+            svgHeartEyes.style.display = 'none';
+            svgMouth.style.display = 'none';
+            svgOpenMouth.style.display = 'block';
+        }
+        else {
+            affectionLevel = 0;
+            svgEyes.style.display = 'block';
+            svgClosedEyes.style.display = 'none';
+            svgHeartEyes.style.display = 'none';
+            svgMouth.style.display = 'block';
+            svgOpenMouth.style.display = 'none';
+        }
 
         // 특정 점수 돌파 시 특별한 애니메이션 (애교 부리기)
         if (score % 20 === 0 && score > 0) {
@@ -135,8 +165,17 @@ storeBtn.addEventListener('click', () => {
 function upgradeToPremium() {
     isPremium = true;
     catObj.className = 'cat-gold';
-    catObj.innerHTML = '👑😻👑'; // 프리미엄 황금 고양이 표정 변화
+
     document.querySelector('body').style.backgroundColor = '#ffecd2';
+
+    // 프리미엄 달성 시 기본 얼굴을 하트눈으로 등급 고정
+    if (svgEyes) {
+        svgEyes.style.display = 'none';
+        svgClosedEyes.style.display = 'none';
+        svgHeartEyes.style.display = 'block';
+        svgMouth.style.display = 'none';
+        svgOpenMouth.style.display = 'block';
+    }
 
     paypalContainer.style.display = 'none';
     document.querySelector('.store-desc').innerText = "황금 고양이로 업그레이드 완료! (클릭당 10점, 자동 쓰다듬기 발동)"; // 설명 변경

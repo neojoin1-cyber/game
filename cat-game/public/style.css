@@ -91,24 +91,69 @@ main {
 }
 
 .cat-normal {
-    font-size: var(--cat-size);
-    line-height: var(--cat-size);
+    width: var(--cat-size);
+    height: var(--cat-size);
     filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.2));
     transition: all 0.3s;
 }
 
 .cat-happy {
-    font-size: var(--cat-size);
-    line-height: var(--cat-size);
+    width: var(--cat-size);
+    height: var(--cat-size);
     filter: drop-shadow(0px 10px 20px rgba(255, 105, 180, 0.4));
     animation: happyWiggle 0.5s infinite;
 }
 
 .cat-gold {
-    font-size: var(--cat-size);
-    line-height: var(--cat-size);
+    width: var(--cat-size);
+    height: var(--cat-size);
     filter: drop-shadow(0px 10px 30px var(--gold));
     animation: goldGlow 1.5s infinite alternate, happyWiggle 1s infinite;
+}
+
+/* SVG 고양이 파츠 스타일 */
+.cat-body {
+    fill: #FFAA00;
+    transition: fill 0.4s;
+}
+
+.cat-tail {
+    stroke: #FFAA00;
+    transition: stroke 0.4s;
+}
+
+.cat-belly {
+    fill: #FFF8E7;
+    transition: fill 0.4s;
+}
+
+/* 황금 고양이 변신 시 파츠 색상 변경 */
+.cat-gold .cat-body {
+    fill: var(--gold);
+}
+
+.cat-gold .cat-tail {
+    stroke: var(--gold);
+}
+
+.cat-gold .cat-belly {
+    fill: #FFF5CC;
+}
+
+/* 꼬리 애니메이션 */
+#tail {
+    transform-origin: 120px 140px;
+    animation: tailWag 2s infinite alternate ease-in-out;
+}
+
+@keyframes tailWag {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(15deg);
+    }
 }
 
 @keyframes idleCat {
