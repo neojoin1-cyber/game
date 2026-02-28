@@ -236,6 +236,14 @@ main {
     animation: goldGlow 1.5s infinite alternate, happyWiggle 1s infinite;
 }
 
+.cat-dance-spin {
+    animation: danceSpin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.cat-dance-jump {
+    animation: danceJump 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 /* SVG 고양이 파츠 스타일 */
 .cat-body {
     fill: #FFAA00;
@@ -310,6 +318,38 @@ main {
 
     100% {
         text-shadow: 0 0 30px var(--gold), 0 0 50px #ffaa00;
+    }
+}
+
+@keyframes danceSpin {
+    0% {
+        transform: perspective(400px) rotateY(0deg) scale(1);
+    }
+
+    50% {
+        transform: perspective(400px) rotateY(180deg) scale(1.1);
+    }
+
+    100% {
+        transform: perspective(400px) rotateY(360deg) scale(1);
+    }
+}
+
+@keyframes danceJump {
+    0% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-30px) rotate(-10deg);
+    }
+
+    60% {
+        transform: translateY(-30px) rotate(10deg);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }
 

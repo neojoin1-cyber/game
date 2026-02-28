@@ -130,6 +130,32 @@ function showSavedIndicator() {
     }
 }
 
+// Special animation & meow sound for milestones
+function triggerMilestoneDance() {
+    if (gameState.settings.soundEnabled) {
+        const meow = document.getElementById('meow-sound');
+        if (meow) {
+            meow.currentTime = 0;
+            meow.play().catch(e => { });
+        }
+    }
+
+    const catAnim = document.getElementById('cat');
+    const dances = ['cat-dance-spin', 'cat-dance-jump'];
+    const danceClass = dances[Math.floor(Math.random() * dances.length)];
+
+    createFloatingText('냐옹~ 감사합니다!💖', catAnim.getBoundingClientRect().left + 100, catAnim.getBoundingClientRect().top, true);
+
+    catAnim.classList.remove('cat-dance-spin', 'cat-dance-jump');
+    // Force reflow
+    void catAnim.offsetWidth;
+    catAnim.classList.add(danceClass);
+
+    setTimeout(() => {
+        catAnim.classList.remove(danceClass);
+    }, 1000);
+}
+
 // Elements
 const catObj = document.getElementById('cat');
 const catContainer = document.getElementById('cat-container');
@@ -508,6 +534,13 @@ function doPetting(x, y, isAuto = false) {
     const baseClickPower = (gameState.isPremium ? 10 : 1) + (gameState.upgradeLevels.clickPower || 0);
     const increment = baseClickPower * currentMult;
     gameState.score += increment;
+    gameState.petMeter += (10 + (isHappyMode ? 5 : 0));
+    // updateCombo(); // This function does not exist in the original code, removing it.
+
+    // Trigger dance & meow every 500 points!
+    if (gameState.score > 0 && Math.floor(gameState.score / 500) > Math.floor((gameState.score - increment) / 500)) {
+        triggerMilestoneDance();
+    }
 
     checkUnlocks(); // Check milestones
 
