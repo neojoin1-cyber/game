@@ -68,7 +68,7 @@ header {
     font-size: 2.5rem;
     font-weight: bold;
     color: #ff4d85;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 main {
@@ -82,30 +82,65 @@ main {
 #cat-container {
     position: relative;
     cursor: pointer;
-    animation: idleCat 2s infinite alternate ease-in-out;
+    animation: idleCat 3s infinite alternate ease-in-out;
+    transition: transform 0.2s;
+}
+
+#cat-container:active {
+    transform: scale(0.9);
 }
 
 .cat-normal {
     font-size: var(--cat-size);
     line-height: var(--cat-size);
-    filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.2));
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s;
+}
+
+.cat-happy {
+    font-size: var(--cat-size);
+    line-height: var(--cat-size);
+    filter: drop-shadow(0px 10px 20px rgba(255, 105, 180, 0.4));
+    animation: happyWiggle 0.5s infinite;
 }
 
 .cat-gold {
     font-size: var(--cat-size);
     line-height: var(--cat-size);
     filter: drop-shadow(0px 10px 30px var(--gold));
-    animation: goldGlow 1.5s infinite alternate;
+    animation: goldGlow 1.5s infinite alternate, happyWiggle 1s infinite;
 }
 
 @keyframes idleCat {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
+    0% {
+        transform: translateY(0) rotate(-2deg);
+    }
+
+    100% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+}
+
+@keyframes happyWiggle {
+
+    0%,
+    100% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
 }
 
 @keyframes goldGlow {
-    0% { text-shadow: 0 0 10px var(--gold); }
-    100% { text-shadow: 0 0 30px var(--gold), 0 0 50px #ffaa00; }
+    0% {
+        text-shadow: 0 0 10px var(--gold);
+    }
+
+    100% {
+        text-shadow: 0 0 30px var(--gold), 0 0 50px #ffaa00;
+    }
 }
 
 .pop-animation {
@@ -113,9 +148,17 @@ main {
 }
 
 @keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.85); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.85);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* 입자 효과 (하트 등) */
@@ -131,6 +174,7 @@ main {
         opacity: 1;
         transform: translateY(0) scale(0.5);
     }
+
     100% {
         opacity: 0;
         transform: translateY(-150px) scale(1.5);
@@ -139,7 +183,7 @@ main {
 
 footer {
     margin-bottom: 30px;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255, 255, 255, 0.7);
     padding: 20px;
     border-radius: 20px;
     backdrop-filter: blur(5px);

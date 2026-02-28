@@ -16,6 +16,7 @@ const firebaseConfig = {
 let score = 0;
 let isPremium = false;
 let autoPetterInterval = null;
+let affectionLevel = 0; // 애정도 레벨
 
 const catObj = document.getElementById('cat');
 const scoreDisplay = document.getElementById('score');
@@ -25,6 +26,9 @@ const playerNameDisplay = document.getElementById('player-name');
 const storeBtn = document.getElementById('store-btn');
 const paypalContainer = document.getElementById('paypal-button-container');
 
+// 고양이 표정 배열 (애정도에 따라 변화)
+const catFaces = ['😺', '😸', '😻', '😽'];
+
 // 쓰다듬기(클릭) 이벤트
 catObj.addEventListener('pointerdown', (e) => {
     // 1. 점수 증가 로직
@@ -32,19 +36,37 @@ catObj.addEventListener('pointerdown', (e) => {
     score += increment;
     scoreDisplay.innerText = score;
 
-    // 2. 고양이 애니메이션
+    // 2. 애교 부리기 로직 (점수에 따라 애정도 상승)
+    if (!isPremium) {
+        if (score > 100) affectionLevel = 3; // 😽
+        else if (score > 50) affectionLevel = 2; // 😻
+        else if (score > 20) affectionLevel = 1; // 😸
+        else affectionLevel = 0; // 😺
+
+        catObj.innerHTML = catFaces[affectionLevel];
+
+        // 특정 점수 돌파 시 특별한 애니메이션 (애교 부리기)
+        if (score % 20 === 0 && score > 0) {
+            catObj.classList.add('cat-happy');
+            setTimeout(() => {
+                catObj.classList.remove('cat-happy');
+            }, 1500); // 1.5초 동안 기분 좋은 애니메이션 유지
+        }
+    }
+
+    // 3. 고양이 클릭 모션
     catContainer.classList.remove('pop-animation');
     void catContainer.offsetWidth; // reflow 트리거
     catContainer.classList.add('pop-animation');
 
-    // 3. 효과음 재생
+    // 4. 효과음 재생
     const purrSound = document.getElementById('purr-sound');
     if (purrSound) {
         purrSound.currentTime = 0;
         purrSound.play().catch(err => console.log('사운드 자동재생 정책으로 무시됨'));
     }
 
-    // 4. 하트 파티클 생성
+    // 5. 하트 파티클 생성
     createParticle(e.clientX, e.clientY);
 });
 
@@ -55,14 +77,14 @@ function createParticle(x, y) {
     particle.className = 'particle';
 
     const rect = catContainer.getBoundingClientRect();
-    
+
     // 클릭 위치나 컨테이너 중심에서 시작
     const startX = x ? x - rect.left - 20 : rect.width / 2;
     const startY = y ? y - rect.top - 20 : rect.height / 2;
 
     particle.style.left = `${startX + (Math.random() * 40 - 20)}px`;
     particle.style.top = `${startY}px`;
-    
+
     catContainer.appendChild(particle);
 
     setTimeout(() => {
@@ -86,7 +108,7 @@ storeBtn.addEventListener('click', () => {
 
     if (window.paypal && !paypalContainer.hasChildNodes()) {
         window.paypal.Buttons({
-            createOrder: function(data, actions) {
+            createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
@@ -96,8 +118,8 @@ storeBtn.addEventListener('click', () => {
                     }]
                 });
             },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
                     alert('결제 성공! ' + details.payer.name.given_name + '님 감사합니다!');
                     upgradeToPremium();
                 });
@@ -113,18 +135,23 @@ storeBtn.addEventListener('click', () => {
 function upgradeToPremium() {
     isPremium = true;
     catObj.className = 'cat-gold';
-    catObj.innerHTML = '😻'; // 표정 변화
+    catObj.innerHTML = '👑😻👑'; // 프리미엄 황금 고양이 표정 변화
     document.querySelector('body').style.backgroundColor = '#ffecd2';
-    
+
     paypalContainer.style.display = 'none';
-    document.querySelector('.store-desc').innerText = "황금 고양이로 업그레이드 완료! (클릭당 10점, 자동 쓰다듬기 발동)";
-    
+    document.querySelector('.store-desc').innerText = "황금 고양이로 업그레이드 완료! (클릭당 10점, 자동 쓰다듬기 발동)"; // 설명 변경
+
     // 자동 쓰다듬기 (초당 1회)
     if (!autoPetterInterval) {
         autoPetterInterval = setInterval(() => {
             score += 10;
             scoreDisplay.innerText = score;
             createParticle();
+            // 자동 클릭 시에도 애교 애니메이션 가끔 발생
+            if (Math.random() > 0.7) {
+                catObj.classList.add('cat-happy');
+                setTimeout(() => catObj.classList.remove('cat-happy'), 500);
+            }
         }, 1000);
     }
 }
