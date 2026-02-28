@@ -18,100 +18,142 @@
 <body>
     <div id="app">
         <header>
-            <div id="user-info">
-                <span id="player-name">게스트</span>
-                <button id="login-btn">로그인 저장</button>
+            <div id="top-bar">
+                <div class="stat" title="Score (친밀도)">💖 <span id="score">0</span></div>
+                <div class="stat" title="Treats (간식)">🐟 <span id="treats">0</span></div>
+                <div class="stat" title="Combo (연속 터치)">🔥 <span id="combo">0</span></div>
+                <div class="stat" title="Multiplier (배율)">✖️ <span id="multiplier">1</span></div>
             </div>
-            <div id="score-board">
-                <span>쓰다듬기: <span id="score">0</span></span>
+            <!-- Top Bar Next Unlock deleted to move into Wardrobe modal -->
+            <div id="pet-meter-container">
+                <div id="pet-meter-label">Pet Meter ✨ <span id="happy-mode-indicator"
+                        style="display:none; color:#ff4d85;">HAPPY MODE!</span></div>
+                <div id="pet-meter-bg">
+                    <div id="pet-meter-fill"></div>
+                </div>
+            </div>
+            <div id="controls-bar">
+                <button id="sound-toggle" title="Sound Toggle">🔊</button>
+                <div id="user-info">
+                    <span id="saved-indicator" style="opacity: 0;">💾 저장됨</span>
+                    <span id="player-name">게스트</span>
+                    <button id="login-btn">로그인</button>
+                </div>
             </div>
         </header>
 
         <main>
             <div id="cat-container">
                 <div id="cat" class="cat-normal">
-                    <svg viewBox="0 0 200 200" width="100%" height="100%" style="overflow:visible;">
-                        <!-- 꼬리 -->
-                        <path id="tail" class="cat-tail" d="M 120 140 Q 180 160 160 80 Q 150 50 170 50" fill="none"
-                            stroke-width="12" stroke-linecap="round" />
-
-                        <!-- 몸통 -->
-                        <ellipse cx="100" cy="140" rx="45" ry="35" class="cat-body" />
-                        <ellipse cx="100" cy="150" rx="25" ry="18" class="cat-belly" /> <!-- 배 -->
-
-                        <!-- 뒷다리 -->
-                        <rect x="120" y="150" width="16" height="28" rx="8" class="cat-body"
-                            transform="rotate(-20 120 150)" />
-                        <rect x="64" y="150" width="16" height="28" rx="8" class="cat-body"
-                            transform="rotate(20 64 150)" />
-
-                        <!-- 발바닥 (앞다리) -->
-                        <rect x="80" y="165" width="14" height="15" rx="7" class="cat-body" />
-                        <rect x="106" y="165" width="14" height="15" rx="7" class="cat-body" />
-
-                        <!-- 머리 뒤/귀 -->
-                        <polygon points="55,80 40,35 75,65" class="cat-body" />
-                        <polygon points="105,80 120,35 85,65" class="cat-body" />
-                        <!-- 귀 안쪽 -->
-                        <polygon points="53,73 45,45 68,63" fill="#FFB6C1" />
-                        <polygon points="107,73 115,45 92,63" fill="#FFB6C1" />
-
-                        <!-- 머리 -->
-                        <circle cx="80" cy="90" r="38" class="cat-body" />
-                        <circle cx="80" cy="98" r="24" class="cat-belly" /> <!-- 주둥이 -->
-
-                        <!-- 눈 (기본) -->
-                        <g id="eyes">
-                            <circle cx="65" cy="85" r="5.5" fill="#333" />
-                            <circle cx="95" cy="85" r="5.5" fill="#333" />
-                            <!-- 반짝이 -->
-                            <circle cx="63" cy="83" r="2" fill="#FFF" />
-                            <circle cx="93" cy="83" r="2" fill="#FFF" />
-                        </g>
-
-                        <!-- 하트 눈 -->
-                        <g id="heart-eyes" style="display:none; fill:#FF4D85;">
-                            <path d="M 65 78 A 3 3 0 0 0 59 84 L 65 92 L 71 84 A 3 3 0 0 0 65 78" />
-                            <path d="M 95 78 A 3 3 0 0 0 89 84 L 95 92 L 101 84 A 3 3 0 0 0 95 78" />
-                        </g>
-
-                        <!-- 감은 눈 (😊) -->
-                        <g id="closed-eyes" style="display:none;" stroke="#333" stroke-width="2.5" fill="none"
-                            stroke-linecap="round">
-                            <path d="M 58 88 Q 65 80 72 88" />
-                            <path d="M 88 88 Q 95 80 102 88" />
-                        </g>
-
-                        <!-- 볼터치 -->
-                        <ellipse cx="52" cy="98" rx="8" ry="4" fill="#FFB6C1" opacity="0.6" id="blush-l" />
-                        <ellipse cx="108" cy="98" rx="8" ry="4" fill="#FFB6C1" opacity="0.6" id="blush-r" />
-
-                        <!-- 코 -->
-                        <polygon points="77,93 83,93 80,97" fill="#FF8DA1" />
-
-                        <!-- 입 (기본) -->
-                        <path id="mouth" d="M 75 99 Q 80 103 80 99 Q 80 103 85 99" fill="none" stroke="#333"
-                            stroke-width="2" stroke-linecap="round" />
-
-                        <!-- 벌린 입 -->
-                        <path id="open-mouth" d="M 75 98 Q 80 108 85 98 Z" fill="#FF4D85" style="display:none;"
-                            stroke="#333" stroke-width="1.5" />
-
-                        <!-- 수염 -->
-                        <path
-                            d="M 42 90 L 25 85 M 42 96 L 22 96 M 42 102 L 28 108 M 118 90 L 135 85 M 118 96 L 138 96 M 118 102 L 132 108"
-                            stroke="#FFF" stroke-width="2" stroke-linecap="round" opacity="0.8" />
-                    </svg>
+                    <img src="assets/cat.jpg" alt="귀여운 고양이"
+                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                    <!-- Accessory Overlays -->
+                    <div id="acc-glasses" class="accessory-layer"></div>
+                    <div id="acc-scarf" class="accessory-layer"></div>
+                    <div id="acc-hat" class="accessory-layer"></div>
+                    <div id="acc-accessory" class="accessory-layer"></div>
                 </div>
                 <div id="particles"></div>
             </div>
+            <!-- Bottom Action Bar -->
+            <div id="bottom-bar">
+                <button id="nav-shop" class="nav-btn">🛒 상점</button>
+                <button id="nav-missions" class="nav-btn">🎯 미션</button>
+                <button id="nav-leaderboard" class="nav-btn">🏆 랭킹</button>
+            </div>
         </main>
 
-        <footer>
+        <footer style="display:none;">
+            <!-- Legacy footer, hidden but kept for reference if needed -->
             <button id="store-btn">✨ 황금 츄르 구매 ($1.99) ✨</button>
             <p class="store-desc">고양이가 황금빛으로 빛나며 쓰다듬기 효과가 10배 증가합니다!</p>
             <div id="paypal-button-container" style="display: none;"></div>
         </footer>
+
+        <!-- Removed standalone Wardrobe Modal -->
+
+        <!-- Unlock Toast -->
+        <div id="unlock-toast" class="toast">
+            <div class="toast-icon">🎁</div>
+            <div class="toast-content">
+                <h4 style="margin:0;">새로운 아이템 잠금 해제!</h4>
+                <p id="unlock-toast-name" style="margin:5px 0 0 0;">아이템 이름</p>
+            </div>
+        </div>
+
+        <!-- Shop Modal -->
+        <div id="shop-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" data-target="shop-modal">&times;</span>
+                <div class="shop-tabs">
+                    <button class="shop-tab active" data-shoptab="upgrades-tab">🛒 업그레이드</button>
+                    <button class="shop-tab" data-shoptab="wardrobe-tab">🎩 옷장</button>
+                </div>
+
+                <!-- Upgrades View -->
+                <div id="upgrades-tab" class="shop-tab-content active">
+                    <div id="shop-list" class="list-container">
+                        <!-- Loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- Wardrobe View -->
+                <div id="wardrobe-tab" class="shop-tab-content">
+                    <div id="wardrobe-progress-container">
+                        <div id="wardrobe-progress-label">Next Reward: <span id="wardrobe-next-score">1000</span>💖
+                        </div>
+                        <div id="wardrobe-progress-bg">
+                            <div id="wardrobe-progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="wardrobe-categories">
+                        <button class="cat-tab active" data-cat="glasses">Glasses</button>
+                        <button class="cat-tab" data-cat="scarf">Scarf</button>
+                        <button class="cat-tab" data-cat="hat">Hat</button>
+                        <button class="cat-tab" data-cat="accessory">Accessory</button>
+                    </div>
+                    <div id="wardrobe-grid" class="wardrobe-grid">
+                        <!-- Items rendered via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Missions Modal -->
+        <div id="missions-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" data-target="missions-modal">&times;</span>
+                <h2>🎯 일일 미션 (Daily Missions)</h2>
+                <div id="missions-list" class="list-container">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Modal -->
+        <div id="leaderboard-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" data-target="leaderboard-modal">&times;</span>
+                <h2>🏆 로컬 랭킹 (Top 10)</h2>
+                <div id="leaderboard-list" class="list-container">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Login Modal -->
+        <div id="daily-login-modal" class="modal">
+            <div class="modal-content">
+                <h2>📅 출석 체크!</h2>
+                <p>오늘도 와주셨군요! 연속 출석 보상을 받으세요.</p>
+                <div id="daily-streak-display">
+                    <!-- Logs streak -->
+                </div>
+                <button id="claim-daily-btn" class="action-btn">보상 받기</button>
+            </div>
+        </div>
+
     </div>
 
     <!-- 힐링 사운드(임의의 효과음 파일이 있다고 가정) -->
