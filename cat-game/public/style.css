@@ -373,27 +373,31 @@ main {
 
 #bottom-bar {
     position: absolute;
-    bottom: 0px;
+    bottom: 20px;
     width: 100%;
     display: flex;
-    justify-content: space-around;
-    padding: 0 20px;
+    justify-content: center;
+    gap: 15px;
+    padding: 0 15px;
     box-sizing: border-box;
     z-index: 50;
 }
 
 .nav-btn {
+    flex: 1;
+    max-width: 110px;
     background: #ff91b2;
     color: white;
     font-family: inherit;
     font-size: 1.1rem;
     font-weight: bold;
     border: none;
-    padding: 12px 18px;
+    padding: 12px 0;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.1s, background 0.2s;
+    white-space: nowrap;
 }
 
 .nav-btn:hover {
